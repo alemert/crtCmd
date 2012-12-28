@@ -1,0 +1,22 @@
+# testing	find short name - 1st 	in test/src/t_find_000.c line 110
+# tested ok	find short name - 1st 	in test/src/t_find_000.c line 123
+# testing	find short name - 2nd 	in test/src/t_find_000.c line 128
+# tested ok	find short name - 2nd 	in test/src/t_find_000.c line 141
+# testing	find short name - last 	in test/src/t_find_000.c line 146
+# tested ok	find short name - last 	in test/src/t_find_000.c line 159
+# testing	find short name - none 	in test/src/t_find_000.c line 164
+# tested ok	find short name - none 	in test/src/t_find_000.c line 177
+# testing	find short name - empty list 	in test/src/t_find_000.c line 182
+# tested ok	find short name - empty list 	in test/src/t_find_000.c line 197
+# testing	find long name - 1st 	in test/src/t_find_000.c line 204
+# tested ok	find long name - 1st 	in test/src/t_find_000.c line 217
+# testing	find long name - 2nd 	in test/src/t_find_000.c line 222
+# tested ok	find long name - 2nd 	in test/src/t_find_000.c line 235
+# testing	find long name - last 	in test/src/t_find_000.c line 240
+# tested ok	find long name - last 	in test/src/t_find_000.c line 253
+# testing	find long name - none 	in test/src/t_find_000.c line 258
+# tested ok	find long name - none 	in test/src/t_find_000.c line 271
+# testing	find long name - empty list 	in test/src/t_find_000.c line 276
+# tested ok	find long name - empty list 	in test/src/t_find_000.c line 291
+# testing	find long name - cfg NULL 	in test/src/t_find_000.c line 299
+# tested ok	find long name - cfg NULL 	in test/src/t_find_000.c line 314

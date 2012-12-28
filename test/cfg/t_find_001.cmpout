@@ -1,0 +1,10 @@
+# testing	find short name - 1st 	in test/src/t_find_001.c line 91
+# tested ok	find short name - 1st 	in test/src/t_find_001.c line 104
+# testing	find short name - 2nd 	in test/src/t_find_001.c line 109
+# tested ok	find short name - 2nd 	in test/src/t_find_001.c line 122
+# testing	find short name - last 	in test/src/t_find_001.c line 127
+# tested ok	find short name - last 	in test/src/t_find_001.c line 140
+# testing	find short name - none 	in test/src/t_find_001.c line 145
+# tested ok	find short name - none 	in test/src/t_find_001.c line 158
+# testing	find short name - empty list 	in test/src/t_find_001.c line 163
+# tested ok	find short name - empty list 	in test/src/t_find_001.c line 178
