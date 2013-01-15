@@ -775,10 +775,10 @@ int getCmdLnAttr(int argc, const char* argv[] )
           goto _door ;                              //
         }                                           //
         nodeCfg = findShortNameCfg( argv[i][1] ) ;  //
-                                                    //
-        if(nodeCfg==NULL) { sysRc=1; goto _door; }  // check if attr exists 
-                                                    //   in config
       }                                             //
+                                                    //
+      if(nodeCfg==NULL) { sysRc=1; goto _door; }    // check if attr exists 
+                                                    //   in config
                                                     // allocate additional node
       nodeAttr = (tCmdLnAttr*) malloc(sizeof(tCmdLnAttr)) ;
       pAttr->next = nodeAttr ;                      //

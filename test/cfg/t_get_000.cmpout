@@ -4,5 +4,7 @@
 # tested ok	get cmdln attr - no attr	in test/src/t_get_000.c line 86
 # testing	get attr - minus minus 	in test/src/t_get_000.c line 91
 # tested ok	get cmdln attr - minus minus	in test/src/t_get_000.c line 105
-# testing	get attr - one empty 	in test/src/t_get_000.c line 110
-# tested ok	get cmdln attr - minus minus	in test/src/t_get_000.c line 124
+# testing	get attr - one empty short	in test/src/t_get_000.c line 110
+# tested ok	get attr - one empty short	in test/src/t_get_000.c line 124
+# testing	get attr - one empty long	in test/src/t_get_000.c line 129
+# tested ok	get attr - one empty long	in test/src/t_get_000.c line 145
