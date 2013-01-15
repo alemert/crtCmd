@@ -1,4 +1,4 @@
 mk.inc              http://syspver1/svn/develop/misc/mk.inc/c
 rollout             http://syspver1/svn/develop/misc/rollout/script
 tools               http://syspver1/svn/develop/misc/tools/bin
-test/include/tutl.h http://syspver1/svn/develop/misc/rollout/elf/include
+test/include/tutl.h http://syspver1/svn/develop/misc/rollout/elf/include/tutl.h
