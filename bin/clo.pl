@@ -681,7 +681,6 @@ int initCmdLnCond()
   {
     print SRC "
   anchorCond = (tCmdLnCond*) malloc(sizeof(tCmdLnCond)) ;
-  if( errno != 0 ) { sysRc = errno ; goto _door ; }
 }
   ";
     return ;
@@ -742,7 +741,7 @@ int getCmdLnAttr(int argc, const char* argv[] )
 
   tCmdLnCfg  *nodeCfg  = NULL ;
   tCmdLnAttr *nodeAttr = NULL ;
-  tCmdLnAttr *pAttr = NULL ;
+  tCmdLnAttr *pAttr    = NULL ;
 
   anchorAttr = (tCmdLnAttr*) malloc(sizeof(tCmdLnAttr)) ;
   if( errno != 0 ) { sysRc = errno ; goto _door ; } 
@@ -950,7 +949,15 @@ int checkCmdLn()
       // check data type int
       // ---------------------------------------
       case CMDL_TYPE_INT  :                   // 
-        if( pCfg->intValue == NULL ) break;   // any initiger values are allowed
+        if( pCfg->intValue == NULL )          // any initiger values are allowed
+        {                                     //
+          if( pAtt->intValue == NULL )        //
+          {                                   //
+            sysRc = 1 ;                       //
+            goto _door ;                      //
+          }                                   //
+          break ;                             //
+        }                                     //
         for(i=0;i<pAtt->element;i++)          //
         {                                     // only special values given by 
           found = 0 ;                         //   config (pCfg) are allowed  
@@ -974,7 +981,15 @@ int checkCmdLn()
       // check data type char
       // ---------------------------------------
       case CMDL_TYPE_CHR  :                   //
-        if( pCfg->chrValue==NULL ) break;     // any values are allowed
+        if( pCfg->chrValue==NULL )            // any values are allowed
+        {                                     //
+          if( pAtt->chrValue == NULL )        //
+          {                                   //
+            sysRc = 1 ;                       //
+            goto _door ;                      //
+          }                                   //
+          break ;                             //
+        }                                     //
         for( i=0; i<pAtt->element; i++ )      //
         {                                     // only special values given by 
           for(j=0;j<pCfg->element;j++)        //   config (pCfg) are allowed
@@ -997,7 +1012,15 @@ int checkCmdLn()
       // check data type string (char*)
       // ---------------------------------------
       case CMDL_TYPE_STR  :                   //
-        if( pCfg->strValue==NULL ) break;     // any values are allowed
+        if( pCfg->strValue==NULL )            // any values are allowed
+        {                                     //
+          if( pAtt->strValue == NULL )        //
+          {                                   //
+            sysRc = 1 ;                       //
+            goto _door ;                      //
+          }                                   //
+          break ;                             //
+        }                                     //
         for( i=0; i<pAtt->element; i++ )      //
         {                                     // only special values given by
           for(j=0;j<pCfg->element;j++)        //   config (pCfg) are allowed
@@ -1032,30 +1055,42 @@ int checkCmdLn()
     switch( pCnd->opr )                       //
     {                                         //
       case COND_OPR_AND :                     //
+        if( pAtt1 == NULL &&                  //
+            pAtt2 == NULL  ) break ;          //
         if( pAtt1 && pAtt2 ) break ;          //
         sysRc = 1  ;                          //
         goto _door ;                          //
       case COND_OPR_XOR :                     //
+        if( pAtt1 == NULL &&                  //
+            pAtt2 == NULL  ) break ;          //
         if( (!!pAtt1) != (!!pAtt2) ) break ;  // boolean xor operator
         sysRc = 1  ;                          //
         goto _door ;                          //
         break      ;                          //
       case COND_OPR_OR :                      //
+        if( pAtt1 == NULL &&                  //
+            pAtt2 == NULL  ) break ;          //
         if( pAtt1 || pAtt2 ) break ;          //
         sysRc = 1  ;                          //
         goto _door ;                          //
         break      ;                          //
       case COND_OPR_NOT_AND :                 //
+        if( pAtt1 == NULL &&
+            pAtt2 == NULL  ) break ;
         if( !(pAtt1 && pAtt2) ) break ;       //
         sysRc = 1  ;                          //
         goto _door ;                          //
         break      ;                          //
       case COND_OPR_NOT_XOR :                 //
+        if( pAtt1 == NULL &&                  //
+            pAtt2 == NULL  ) break ;          //
         if(!((!!pAtt1)!=(!!pAtt2))) break ;   //
         sysRc = 1  ;                          //
         goto _door ;                          //
         break      ;                          //
       case COND_OPR_NOT_OR :                  //
+        if( pAtt1 == NULL &&                  //
+            pAtt2 == NULL  ) break ;          //
         if( !(pAtt1 || pAtt2) ) break ;       //
         sysRc = 1  ;                          //
         goto _door ;                          //
