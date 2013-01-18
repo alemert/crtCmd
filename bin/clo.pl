@@ -961,7 +961,7 @@ int checkCmdLn()
         for(i=0;i<pAtt->element;i++)          //
         {                                     // only special values given by 
           found = 0 ;                         //   config (pCfg) are allowed  
-          for( j=0; i<pCfg->element; j++ )    // check if every value given by  
+          for( j=0; j<pCfg->element; j++ )    // check if every value given by  
           {                                   //   pAttr (cmdln) can be found in
             if( pAtt->intValue[i] ==          //   pCfg  (config)
                 pCfg->intValue[j]  )          //
@@ -976,6 +976,7 @@ int checkCmdLn()
             goto _door ;                      //
           }                                   //
         }                                     //
+        break ;                        //
                                               //
       // ---------------------------------------
       // check data type char
@@ -992,7 +993,8 @@ int checkCmdLn()
         }                                     //
         for( i=0; i<pAtt->element; i++ )      //
         {                                     // only special values given by 
-          for(j=0;j<pCfg->element;j++)        //   config (pCfg) are allowed
+          found = 0 ;          //   config (pCfg) are allowed
+          for(j=0;j<pCfg->element;j++)        //
           {                                   // check if every value given by
             if( pAtt->chrValue[i] ==          //   pAttr (cmdln) can be found in
                 pCfg->chrValue[j]  )          //   pCfg  (config)
@@ -1007,6 +1009,7 @@ int checkCmdLn()
             goto _door ;                      //
           }                                   //
         }                                     //
+        break ;                          //
                                               //
       // ---------------------------------------
       // check data type string (char*)
@@ -1023,7 +1026,8 @@ int checkCmdLn()
         }                                     //
         for( i=0; i<pAtt->element; i++ )      //
         {                                     // only special values given by
-          for(j=0;j<pCfg->element;j++)        //   config (pCfg) are allowed
+          found = 0 ;                    //   config (pCfg) are allowed
+          for(j=0;j<pCfg->element;j++)        //
           {                                   // check if every value given by
             if(strcmp(pAtt->strValue[i],      //   pAttr (cmdln) can be found in
                       pCfg->strValue[j])==0)  //   pCfg  (config)
@@ -1075,8 +1079,8 @@ int checkCmdLn()
         goto _door ;                          //
         break      ;                          //
       case COND_OPR_NOT_AND :                 //
-        if( pAtt1 == NULL &&
-            pAtt2 == NULL  ) break ;
+        if( pAtt1 == NULL &&                  //
+            pAtt2 == NULL  ) break ;          //
         if( !(pAtt1 && pAtt2) ) break ;       //
         sysRc = 1  ;                          //
         goto _door ;                          //
