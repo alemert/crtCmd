@@ -6,6 +6,7 @@ my $cfgFile ;
 my $cFile ;
 my $hFile ;
 my $fileType ;
+my @library  ;
 
 my $majorHelpFormat = "  ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<~~
 " ;
@@ -34,47 +35,58 @@ my $historyFlag ;
 my $help ;
 
 while( defined $ARGV[0] )
-{
-  if( $ARGV[0] =~ s/^-(\w)$/$1/ )
-  {
-    $majorFlag = $ARGV[0] ;
-    $historyFlag = $majorFlag ;
-    shift @ARGV ;
-    next ;
-  }
-
-  if( $majorFlag eq 't' )  # c output file
-  {                        #
-    $fileType = $ARGV[0] ; #
-    $majorFlag = '' ;      #
-    shift @ARGV ;          #
-    next ;                 #
-  }                        #
-                           #
-  if( $majorFlag eq 'c' )  # c output file
-  {                        #
-    $cFile = $ARGV[0] ;    #
-    $majorFlag = '' ;      #
-    shift @ARGV ;          #
-    next ;                 #
-  }                        #
-                           #
-  if( $majorFlag eq 'h' )  # h output file
-  {                        #
-    $hFile = $ARGV[0] ;    #
-    $majorFlag = '' ;      #
-    shift @ARGV ;          #
-    next ;                 #
-  }                        #
-                           #
-  if( $majorFlag eq 'i' )  # cfg input file
-  {                        #
-    $cfgFile = $ARGV[0] ;  #
-    $majorFlag = '' ;      #
-    shift @ARGV ;          #
-    next ;                 #
-  }                        #
-                           #
+{    
+                                   #
+  if( $ARGV[0] =~ s/^-(\w)$/$1/ )  #
+  {                                #
+    $majorFlag = $ARGV[0] ;        #
+    $historyFlag = $majorFlag ;    #
+    shift @ARGV ;                  #
+    next ;                         #
+  }                                #
+                                   #
+  if( $majorFlag eq 't' )          # type ( c or h )
+  {                                #
+    $fileType = $ARGV[0] ;         #
+    $majorFlag = '' ;              #
+    shift @ARGV ;                  #
+    next ;                         #
+  }                                #
+                                   #
+  if( $majorFlag eq 'c' )          # c output file
+  {                                #
+    $cFile = $ARGV[0] ;            #
+    $majorFlag = '' ;              #
+    shift @ARGV ;                  #
+    next ;                         #
+  }                                #
+                                   #
+  if( $majorFlag eq 'h' )          # h output file
+  {                                #
+    $hFile = $ARGV[0] ;            #
+    $majorFlag = '' ;              #
+    shift @ARGV ;                  #
+    next ;                         #
+  }                                #
+                                   #
+  if( $majorFlag eq 'i' )          # cfg input file
+  {                                #
+    $cfgFile = $ARGV[0] ;          #
+    $majorFlag = '' ;              #
+    shift @ARGV ;                  #
+    next ;                         #
+  }                                #
+                                   #
+  if( $majorFlag eq 'l' )          #
+  {                                #
+    next unless defined $ARGV[0] ; #
+    foreach my $library ( @ARGV )  #
+    {                              #
+      last if $ARGV[0] =~ /^-/ ;   #
+      push @library, $library ;    #
+    }                              #
+  }                                #
+                                   #
   die "unknow flag -$historyFlag " ;
 }
 
@@ -91,7 +103,7 @@ $fileType eq 'h' || &usage()  ;
 ################################################################################
 sub usage
 {
-  print "clo.pl -t [c|h] -c source.c -h source.h -i config.ini"
+  print "clo.pl -t c|h -c source.c -h source.h -i config.ini [-l libraries]"
 }
 
 sub readCfg
@@ -297,8 +309,19 @@ tCmdLnAttr* findAttr( const char shortName ) ;
 int initCmdLnCfg() ;
 int initCmdLnCond() ;
 
-int getCmdLnAttr(int argc, const char* argv[] ) ;
+int getCmdLnAttr( int argc, const char* argv[] ) ;
+int handleCmdLn(  int argc, const char* argv[] ) ;
+
+void revOutver4bin_() ;    // funciton defined in verElf
 ";
+if( scalar @library > 0 )
+{
+  foreach my $library (@library)
+  {
+    $library =~ s/\.\w+$// ;
+    print "void revOutver4lib_libsogen() ;    //function defined in verElf \n"; 
+  }
+}
   close HEAD ;
 }
 
@@ -361,6 +384,14 @@ sub printInternal
   open SRC, ">>$cFile" ;
 
   print SRC "
+/******************************************************************************/
+/* version      */
+/******************************************************************************/
+void version( )
+{
+
+}
+
 /******************************************************************************/
 /* print usage                                                                */
 /******************************************************************************/
