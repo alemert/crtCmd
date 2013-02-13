@@ -147,10 +147,13 @@ sub readCfg
 
       $longName = $value if $key eq 'long' ;
 
-      $longName eq 'help'     ||
-      $longName eq 'version'  ||
-      $longName eq 'revision' || 
-      die "$longName is a key word, please change $cfgFile\n" ;
+      if( $longName eq 'help'     ||
+          $longName eq 'version'  ||
+          $longName eq 'revision' ) 
+      {
+      # print "$longName is a key word, please change $cfgFile\n" ;
+        die "$longName is a key word, please change $cfgFile\n" ;
+      }
 
       $cfg{attr}{$longName}{$key}=$value ;
       next ;
