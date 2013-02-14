@@ -416,9 +416,10 @@ void version( )
 /******************************************************************************/
 void revision( )
 {
-  printf( \"call: %s, please adjust clo.pl\\n\",__FUNCTION__ ); 
-
+  printf(\"\\n\"); 
   revOutver4bin_() ;
+
+  printf(\"\\n\"); 
 " ;
 foreach my $library (@library)
 {
