@@ -46,6 +46,7 @@ int main(int argc, const char* argv[] )
   int sysRc = 0 ;
 
   sysRc = handleCmdLn( argc, argv ) ;
+  if( sysRc != 0 ) goto _door ;
 
   goto _door ;
 

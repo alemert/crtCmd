@@ -83,8 +83,10 @@ while( defined $ARGV[0] )
     foreach my $library ( @ARGV )  #
     {                              #
       last if $ARGV[0] =~ /^-/ ;   #
+      shift @ARGV ;            #
       push @library, $library ;    #
     }                              #
+    next ;                    #
   }                                #
                                    #
   die "unknow flag -$historyFlag " ;
@@ -322,14 +324,23 @@ int handleCmdLn(  int argc, const char* argv[] ) ;
 
 void revOutver4bin_() ;    // funciton defined in verElf
 ";
-if( scalar @library > 0 )
+
+foreach my $library (@library)
 {
-  foreach my $library (@library)
-  {
-    $library =~ s/\.\w+$// ;
-    print "void revOutver4lib_libsogen() ;    //function defined in verElf \n"; 
-  }
+  $library =~ s/\.\w+$// ;
+  print HEAD "void revOutver4lib_$library() ;   //function defined in verElf\n";
 }
+
+print HEAD "
+" ; 
+
+#if( scalar @library > 0 )
+#{
+#  foreach my $library (@library)
+#  {
+#    print "void revOutver4lib_$library() ;    //function defined in verElf \n"; 
+#  }
+#}
   close HEAD ;
 }
 
@@ -393,11 +404,28 @@ sub printInternal
 
   print SRC "
 /******************************************************************************/
-/* version      */
+/* version                                    */
 /******************************************************************************/
 void version( )
 {
+  printf( \"call: %s, please adjust clo.pl\\n\",__FUNCTION__ ); 
+}
 
+/******************************************************************************/
+/* revision                                                */
+/******************************************************************************/
+void revision( )
+{
+  printf( \"call: %s, please adjust clo.pl\\n\",__FUNCTION__ ); 
+
+  revOutver4bin_() ;
+" ;
+foreach my $library (@library)
+{
+  $library =~ s/\..+$// ;
+  print SRC "  revOutver4lib_$library() ;" ;
+}
+  print SRC "
 }
 
 /******************************************************************************/
@@ -1159,23 +1187,35 @@ sub printHandler
 
 print SRC "
 /******************************************************************************/
-/* handle command line attributes                                        */
+/* handle command line attributes                                             */
 /******************************************************************************/
 int handleCmdLn(int argc, const char* argv[])
 {
   int sysRc ;
 
+  if( argc == 2 )
+  {
+    if( memcmp( argv[1], \"--revision\", sizeof(\"--revision\")) == 0 ) 
+    {
+      revision() ;
+      sysRc = 2 ;
+      goto _doorDefault ;
+    }
+  }
+
   initCmdLnCfg() ;
   initCmdLnCond() ;
 
   sysRc = getCmdLnAttr( argc, argv ) ;
-  if( sysRc ) goto _door ;
+  if( sysRc ) goto _doorErr ;
 
   sysRc = checkCmdLn( ) ;
-  if( sysRc ) goto _door ;
+  if( sysRc ) goto _doorErr ;
 
-_door :
+_doorErr :
   if( sysRc ) usage( argv[0] ) ;
+
+_doorDefault :
   return sysRc ;
 }
 ";
