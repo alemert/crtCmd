@@ -332,15 +332,8 @@ foreach my $library (@library)
 }
 
 print HEAD "
+void version() ;
 " ; 
-
-#if( scalar @library > 0 )
-#{
-#  foreach my $library (@library)
-#  {
-#    print "void revOutver4lib_$library() ;    //function defined in verElf \n"; 
-#  }
-#}
   close HEAD ;
 }
 
@@ -406,10 +399,10 @@ sub printInternal
 /******************************************************************************/
 /* version                                    */
 /******************************************************************************/
-void version( )
-{
-  printf( \"call: %s, please adjust clo.pl\\n\",__FUNCTION__ ); 
-}
+//void version( )
+//{
+//  printf( \"call: %s, please adjust clo.pl\\n\",__FUNCTION__ ); 
+//}
 
 /******************************************************************************/
 /* revision                                                */
@@ -1199,6 +1192,13 @@ int handleCmdLn(int argc, const char* argv[])
     if( memcmp( argv[1], \"--revision\", sizeof(\"--revision\")) == 0 ) 
     {
       revision() ;
+      sysRc = 2 ;
+      goto _doorDefault ;
+    }
+
+    if( memcmp( argv[1], \"--version\", sizeof(\"--version\")) == 0 ) 
+    {
+      version() ;
       sysRc = 2 ;
       goto _doorDefault ;
     }
