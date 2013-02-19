@@ -84,6 +84,8 @@ endif
 # ------------------------------------------------------------------------------
 SRC.O += $(CMDL_OBJ_PATH)/cmdln.o
 
+$(CMDL_SRC_PATH)/cmdln.c : $(CLO)
+
 TEST = t_find_000 t_find_001 t_init_000 t_init_001 t_get_000
 
 include $(MAKE_INCLUDE_PATH)/test.mk
