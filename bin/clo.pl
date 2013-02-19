@@ -268,7 +268,7 @@ sub printHead_h
 #define PROGRAM_NAME   \"".$_prg->{name}."\" 
 
 /******************************************************************************/
-/*   M A C R O S                                     */
+/*   M A C R O S                                           */
 /******************************************************************************/
 
 /******************************************************************************/
@@ -339,6 +339,8 @@ char** getStrArrayAttr(   const char *longName ) ;
 char*  getStrAttr(        const char *longName ) ;
 char*  getCharArrayAttr(  const char *longName ) ;
 char   getCharAttr(       const char *longName ) ;
+
+int getAttrSize( const char *longName ) ;
 
 void revOutver4bin_() ;    // funciton defined in verElf
 ";
@@ -415,7 +417,7 @@ sub printInternal
 
   print SRC "
 /******************************************************************************/
-/* version                                    */
+/* version                                          */
 /******************************************************************************/
 //void version( )
 //{
@@ -423,7 +425,7 @@ sub printInternal
 //}
 
 /******************************************************************************/
-/* revision                                                */
+/* revision                                                      */
 /******************************************************************************/
 void revision( )
 {
@@ -567,6 +569,19 @@ _door:
 }
 
 /******************************************************************************/
+/* get the nr. of elements for this node                                      */
+/******************************************************************************/
+int getAttrSize( const char *longName )
+{
+  tCmdLnAttr *nodeAttr ;
+
+  nodeAttr = findLongAttr( longName ) ;
+
+  if( nodeAttr == NULL ) return -1 ;
+
+  return nodeAttr->element ;
+}
+/******************************************************************************/
 /* get command line attribute of type empty to longName                       */
 /******************************************************************************/
 int getFlagAttr( const char *longName )
@@ -617,7 +632,7 @@ int getIntAttr( const char *longName )
     goto _door ;
   }
 
-  if( p+1 == NULL )
+  if( getAttrSize( longName ) != 1 )
   {
     rc = INT_MAX ;
     goto _door ;
@@ -635,6 +650,19 @@ _door :
 char** getStrArrayAttr( const char* longName ) 
 {
   tCmdLnAttr *nodeAttr ;
+
+  char **s = NULL ;
+
+  nodeAttr = findLongAttr( longName ) ;
+
+  if( nodeAttr->type != CMDL_TYPE_STR ) goto _door ; // wrong type
+
+  if( nodeAttr == NULL ) goto _door ;
+
+  s = nodeAttr->strValue ; 
+  
+_door :
+  return s ; 
 }
 
 /******************************************************************************/
@@ -642,23 +670,59 @@ char** getStrArrayAttr( const char* longName )
 /******************************************************************************/
 char*  getStrAttr( const char* longName ) 
 {
-  tCmdLnAttr *nodeAttr ;
+  char **s ;
+  char *rc = NULL ;
+
+  s = getStrArrayAttr( longName ) ;
+
+  if( s == NULL ) goto _door ;
+
+  if( getAttrSize( longName ) != 1 ) goto _door ;
+
+  rc = *s ;
+_door :
+  return rc ;
 }
 
 /******************************************************************************/
-/* get command line attribute of type *char belonging to longName           */
+/* get command line attribute of type *char belonging to longName            */
 /******************************************************************************/
 char*  getCharArrayAttr( const char* longName ) 
 {
   tCmdLnAttr *nodeAttr ;
+
+  char *c = NULL ;
+
+  nodeAttr = findLongAttr( longName ) ;
+
+  if( nodeAttr->type != CMDL_TYPE_STR ) goto _door ; // wrong type
+
+  if( nodeAttr == NULL ) goto _door ;
+
+  c = nodeAttr->chrValue ; 
+  
+_door :
+  return c ; 
 }
 
 /******************************************************************************/
-/* get command line attribute of type char belonging to longName           */
+/* get command line attribute of type char belonging to longName              */
 /******************************************************************************/
 char   getCharAttr( const char* longName ) 
 {
-  tCmdLnAttr *nodeAttr ;
+  int *c ; 
+  int rc = 0 ;
+
+  c = getIntArrayAttr( longName ) ;
+
+  if( c    == NULL ) goto _door ;
+
+  if( getAttrSize != 1 ) goto _door ;
+
+  rc = *c ;
+ 
+_door :   
+  return rc ;
 }
 
 " ;
