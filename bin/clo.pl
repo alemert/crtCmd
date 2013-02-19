@@ -590,9 +590,10 @@ int getFlagAttr( const char *longName )
 
   nodeAttr = findLongAttr( longName ) ;
 
+  if( nodeAttr == NULL ) return 1 ;                  // longName not found 
+                  
   if( nodeAttr->type != CMDL_TYPE_EMPTY ) return 2 ; // wrong type
-
-  if( findLongAttr( longName ) == NULL ) return 1 ;  // longName not found 
+                  
   return 0 ;                                         // longName found
 } 
 
