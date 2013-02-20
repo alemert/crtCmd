@@ -1,0 +1,2 @@
+0001: segmentation fault in getStrArrayAttr 
+	problem solved in all get{Type}ArrayAttr functions

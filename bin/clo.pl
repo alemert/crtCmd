@@ -607,9 +607,9 @@ int* getIntArrayAttr( const char *longName )
 
   nodeAttr = findLongAttr( longName ) ;
 
-  if( nodeAttr->type != CMDL_TYPE_INT ) goto _door ; // wrong type
-
   if( nodeAttr == NULL ) goto _door ;
+
+  if( nodeAttr->type != CMDL_TYPE_INT ) goto _door ; // wrong type
 
   p = nodeAttr->intValue ; 
   
@@ -656,9 +656,9 @@ char** getStrArrayAttr( const char* longName )
 
   nodeAttr = findLongAttr( longName ) ;
 
-  if( nodeAttr->type != CMDL_TYPE_STR ) goto _door ; // wrong type
-
   if( nodeAttr == NULL ) goto _door ;
+
+  if( nodeAttr->type != CMDL_TYPE_STR ) goto _door ; // wrong type
 
   s = nodeAttr->strValue ; 
   
@@ -696,9 +696,9 @@ char*  getCharArrayAttr( const char* longName )
 
   nodeAttr = findLongAttr( longName ) ;
 
-  if( nodeAttr->type != CMDL_TYPE_STR ) goto _door ; // wrong type
-
   if( nodeAttr == NULL ) goto _door ;
+
+  if( nodeAttr->type != CMDL_TYPE_STR ) goto _door ; // wrong type
 
   c = nodeAttr->chrValue ; 
   
