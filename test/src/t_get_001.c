@@ -32,7 +32,7 @@ int main( int argc, const char** argv )
   int sysRc = NO_ERROR ;
 
   // -------------------------------------------------------
-  // some test 
+  // getAttrSize
   // -------------------------------------------------------
   #if( 0 )
   startTestStep("getAttr size - no attributes nodes");
