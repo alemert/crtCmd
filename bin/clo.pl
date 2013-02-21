@@ -451,6 +451,8 @@ void usage( )
 
   fprintf(stderr,\"%s \",PROGRAM_NAME ) ;         // print the name of the prg
                                                   //
+  if( anchorCfg == NULL ) goto _door ;            //
+                                                  //
   p = anchorCfg ;                                 // print obligatory attr
   while( p->next != NULL )                        //
   {                                               //
@@ -477,6 +479,8 @@ void usage( )
   }                                               //
   fprintf(stderr,\"\\n\") ;                       //
                                                   //
+_door :                                           //
+  return ;                                        //
 }
 
 /******************************************************************************/
@@ -718,7 +722,7 @@ char   getCharAttr( const char* longName )
 
   if( c    == NULL ) goto _door ;
 
-  if( getAttrSize != 1 ) goto _door ;
+  if( getAttrSize( longName ) != 1 ) goto _door ;
 
   rc = *c ;
  
