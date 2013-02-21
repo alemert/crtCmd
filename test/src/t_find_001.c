@@ -108,7 +108,7 @@ int main(int argc, const char** argv )
   // -------------------------------------------------------
   startTestStep( "find short name - 2nd " );
 
-  rcAttr = findAttr( 'j' ) ;
+  rcAttr = findShortAttr( 'j' ) ;
   if( rcAttr != pAttr[1] )
   {
     errTestStep( "find short name - 2nd " );
@@ -126,7 +126,7 @@ int main(int argc, const char** argv )
   // -------------------------------------------------------
   startTestStep( "find short name - last " );
 
-  rcAttr = findAttr( 'k' ) ;
+  rcAttr = findShortAttr( 'k' ) ;
   if( rcAttr != pAttr[2] )
   {
     errTestStep( "find short name - last " );
@@ -144,7 +144,7 @@ int main(int argc, const char** argv )
   // -------------------------------------------------------
   startTestStep( "find short name - none " );
 
-  rcAttr = findAttr( 'a' ) ;
+  rcAttr = findShortAttr( 'a' ) ;
   if( rcAttr != NULL )
   {
     errTestStep( "find short name - none " );
@@ -164,7 +164,7 @@ int main(int argc, const char** argv )
 
   anchorAttr->next = NULL ;
 
-  rcAttr = findAttr( 'i' ) ;
+  rcAttr = findShortAttr( 'i' ) ;
   if( rcAttr != NULL )
   {
     errTestStep( "find short name - empty list " );
