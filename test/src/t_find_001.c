@@ -90,7 +90,7 @@ int main(int argc, const char** argv )
   // -------------------------------------------------------
   startTestStep( "find short name - 1st " );
 
-  rcAttr = findAttr( 'i' ) ;
+  rcAttr = findShortAttr( 'i' ) ;
   if( rcAttr != pAttr[0] )
   {
     errTestStep( "find short name - 1st " );
