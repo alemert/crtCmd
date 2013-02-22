@@ -1,2 +1,2 @@
-# testing	    init config 	in test/src/t_init_001.c line 42
-# tested ok	    init config 	in test/src/t_init_001.c line 55
+# TEST START initCmdLnCond >>general ok test     << test/src/t_init_001.c(0047)
+# TEST OK    initCmdLnCond >>general ok test     << test/src/t_init_001.c(0047)

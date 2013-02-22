@@ -1,0 +1,8 @@
+cmdl1  -o [-t] [-c] [-i]
+  program zum testeten von command lines
+ options:
+   -t,--task            task to do (optional)
+   -o,--output          output file
+   -c,--command         task to do (optional)
+   -i,--intiger         some digit (optional)
+

@@ -26,7 +26,7 @@
 #include "var/cmdl/src/cmdln.h"
 
 /******************************************************************************/
-/* prototypes                                        */
+/* prototypes                                                                 */
 /******************************************************************************/
 
 /******************************************************************************/
@@ -36,22 +36,11 @@ int main(int argc, const char** argv )
 {
   int sysRc = NO_ERROR ;
 
-  initCmdLnCfg() ;
 
-  startTestStep( "init config " );
+  doTest( "general err test" , \
+          1                  , \
+          initCmdLnCfg ) ;
 
-  sysRc = initCmdLnCfg() ;
-  if( sysRc != 0 )
-  {
-    errTestStep( "init config " );
-    goto _door ;
-  }
-  else
-  {
-    sysRc = 0 ;
-  }
-
-  okTestStep( "init config " );
 
 _door :
   return sysRc ;

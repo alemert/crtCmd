@@ -32,15 +32,23 @@ int main( int argc, const char** argv )
   int sysRc = NO_ERROR ;
 
   // -------------------------------------------------------
-  // some test 
+  // no args -> usage
   // -------------------------------------------------------
-#if(0)
-  doTest( "some general test description ", \
-          function_return_code            , \
-          funstion_name                   , \
-          function_attribute_list         ) ;
-#endif
+  doTest( "no arguments -> usage()" , \
+          0                         , \
+          handleCmdLn              ,  \
+          1, argv                   ) ;
 
+  // -------------------------------------------------------
+  // usage()
+  // -------------------------------------------------------
+  {
+  const char *cmdln[] = { "program", "--help", NULL } ;
+  doTest( "--help -> usage()"    , \
+          0                      , \
+          handleCmdLn            , \
+          2, cmdln ) ;
+  }
 _door:
   return sysRc ;
 }

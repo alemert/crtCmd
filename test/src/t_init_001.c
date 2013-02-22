@@ -39,6 +39,15 @@ int main(int argc, const char** argv )
 
   initCmdLnCfg() ;
 
+  // -------------------------------------------------------
+  // some test
+  // -------------------------------------------------------
+  doTest( "general ok test" , \
+          0                    , \
+          initCmdLnCond ) ;
+
+
+#if(0)
   startTestStep( "init config " );
 
   sysRc = initCmdLnCond() ;
@@ -53,7 +62,7 @@ int main(int argc, const char** argv )
   }
 
   okTestStep( "init config " );
-
+#endif
 _door :
   return sysRc ;
 }
