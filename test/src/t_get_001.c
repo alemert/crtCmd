@@ -34,19 +34,10 @@ int main( int argc, const char** argv )
   // -------------------------------------------------------
   // getAttrSize
   // -------------------------------------------------------
-  #if( 0 )
-  startTestStep("getAttr size - no attributes nodes");
-  sysRc = getAttrSize( "output" ) ;
-  if( sysRc != -1 )
-  {
-    errTestStep( "getAttr size - no attributes nodes" ) ;
-    goto _door ;
-  }
-  okTestStep( "getAttr size - no attributes nodes" ) ;
-  #endif
-
-  doTest( "getAttr size - no attributes nodes",
-          -1, getAttrSize, "output" ) ;
+  doTest( "no attributes nodes", \
+          -1                   , \
+          getAttrSize          , \
+          "output"             ) ;
 
 _door:
   return sysRc ;

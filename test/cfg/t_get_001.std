@@ -1,2 +1,2 @@
-# TEST START >>getAttr size - no attributes nodes<< test/src/t_get_001.c(0049)
-# TEST OK    >>getAttr size - no attributes nodes<< test/src/t_get_001.c(0049)
+# TEST START getAttrSize >>no attributes nodes << test/src/t_get_001.c(0040)
+# TEST OK    getAttrSize >>no attributes nodes << test/src/t_get_001.c(0040)
