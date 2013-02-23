@@ -35,7 +35,7 @@ int main( int argc, const char** argv )
   // getStrArrayAttr
   // -------------------------------------------------------
   doPointTest( "some attribute will be found " , \
-               !NULL                           , \
+               !=                              , \
                getStrArrayAttr                 , \
                "output"                        ) ;
 
