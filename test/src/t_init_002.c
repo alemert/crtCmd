@@ -35,7 +35,7 @@ int main( int argc, const char** argv )
   // no args -> usage
   // -------------------------------------------------------
   doTest( "no arguments -> usage()" , \
-          0                         , \
+          1                         , \
           handleCmdLn              ,  \
           1, argv                   ) ;
 
@@ -45,7 +45,7 @@ int main( int argc, const char** argv )
   {
   const char *cmdln[] = { "program", "--help", NULL } ;
   doTest( "--help -> usage()"    , \
-          0                      , \
+          1                      , \
           handleCmdLn            , \
           2, cmdln ) ;
   }

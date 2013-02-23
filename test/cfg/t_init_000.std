@@ -1,2 +1,2 @@
-# TEST START initCmdLnCfg >>general ok test     << test/src/t_init_000.c(0043)
-# TEST OK    initCmdLnCfg >>general ok test     << test/src/t_init_000.c(0043)
+# TEST START initCmdLnCfg >>general err test    << test/src/t_init_000.c(0042)
+# TEST OK    initCmdLnCfg >>general err test    << test/src/t_init_000.c(0042)

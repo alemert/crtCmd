@@ -1,2 +1,4 @@
 # TEST START handleCmdLn >>no arguments -> usage()<< test/src/t_init_002.c(0040)
-# TEST ERR   handleCmdLn >>no arguments -> usage()<< test/src/t_init_002.c(0040)
+# TEST OK    handleCmdLn >>no arguments -> usage()<< test/src/t_init_002.c(0040)
+# TEST START handleCmdLn >>--help -> usage()   << test/src/t_init_002.c(0050)
+# TEST OK    handleCmdLn >>--help -> usage()   << test/src/t_init_002.c(0050)

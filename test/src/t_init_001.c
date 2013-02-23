@@ -46,23 +46,6 @@ int main(int argc, const char** argv )
           0                    , \
           initCmdLnCond ) ;
 
-
-#if(0)
-  startTestStep( "init config " );
-
-  sysRc = initCmdLnCond() ;
-  if( sysRc != 0 )
-  {
-    errTestStep( "init config " );
-    goto _door ;
-  }
-  else
-  {
-    sysRc = 0 ;
-  }
-
-  okTestStep( "init config " );
-#endif
 _door :
   return sysRc ;
 }

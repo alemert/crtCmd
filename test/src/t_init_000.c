@@ -38,7 +38,7 @@ int main(int argc, const char** argv )
 
 
   doTest( "general err test" , \
-          1                  , \
+          0                  , \
           initCmdLnCfg ) ;
 
 
