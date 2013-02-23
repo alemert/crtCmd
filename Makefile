@@ -52,9 +52,9 @@ SRC.O += $(CMDL_OBJ_PATH)/cmdln.o $(REVISION_OBJ_PATH)/ver4bin.o
 
 $(CMDL_SRC_PATH)/cmdln.c : $(CLO)
 
-TEST = t_find_000 t_find_001   \
+TEST = t_find_000 t_find_001            \
        t_init_000 t_init_001 t_init_002 \
-       t_get_000  t_get_001
+       t_get_000  t_get_001  t_get_002
 
 include $(MAKE_INCLUDE_PATH)/test.mk
 
