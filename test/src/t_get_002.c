@@ -34,10 +34,10 @@ int main( int argc, const char** argv )
   // -------------------------------------------------------
   // getStrArrayAttr
   // -------------------------------------------------------
-  doTest( "some attribute will be found " , \
-          0                               , \
-          getStrArrayAttr                 , \
-          "output"                        ) ;
+  doPointTest( "some attribute will be found " , \
+               !NULL                           , \
+               getStrArrayAttr                 , \
+               "output"                        ) ;
 
 _door:
   return sysRc ;

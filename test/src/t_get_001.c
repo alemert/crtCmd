@@ -34,10 +34,10 @@ int main( int argc, const char** argv )
   // -------------------------------------------------------
   // getAttrSize
   // -------------------------------------------------------
-  doTest( "no attributes nodes", \
-          -1                   , \
-          getAttrSize          , \
-          "output"             ) ;
+  doIntTest( "no attributes nodes", \
+             -1                   , \
+             getAttrSize          , \
+             "output"             ) ;
 
 _door:
   return sysRc ;

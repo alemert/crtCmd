@@ -42,7 +42,7 @@ int main(int argc, const char** argv )
   // -------------------------------------------------------
   // some test
   // -------------------------------------------------------
-  doTest( "general ok test" , \
+  doIntTest( "general ok test" , \
           0                    , \
           initCmdLnCond ) ;
 

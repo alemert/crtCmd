@@ -37,9 +37,9 @@ int main(int argc, const char** argv )
   int sysRc = NO_ERROR ;
 
 
-  doTest( "general err test" , \
-          0                  , \
-          initCmdLnCfg ) ;
+  doIntTest( "general err test" , \
+             0                  , \
+             initCmdLnCfg ) ;
 
 
 _door :

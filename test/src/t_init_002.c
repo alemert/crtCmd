@@ -34,20 +34,20 @@ int main( int argc, const char** argv )
   // -------------------------------------------------------
   // no args -> usage
   // -------------------------------------------------------
-  doTest( "no arguments -> usage()" , \
-          1                         , \
-          handleCmdLn              ,  \
-          1, argv                   ) ;
+  doIntTest( "no arguments -> usage()" , \
+             1                         , \
+             handleCmdLn              ,  \
+             1, argv                   ) ;
 
   // -------------------------------------------------------
   // usage()
   // -------------------------------------------------------
   {
   const char *cmdln[] = { "program", "--help", NULL } ;
-  doTest( "--help -> usage()"    , \
-          1                      , \
-          handleCmdLn            , \
-          2, cmdln ) ;
+  doIntTest( "--help -> usage()"    , \
+             1                      , \
+             handleCmdLn            , \
+             2, cmdln ) ;
   }
 _door:
   return sysRc ;
