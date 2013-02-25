@@ -21,7 +21,7 @@
 // ---------------------------------------------------------
 // own 
 // ---------------------------------------------------------
-#include "tutl.h"
+#include <tutl.h>
 #include "var/cmdl/src/cmdln.h"
 
 /******************************************************************************/
@@ -32,45 +32,21 @@ int main( int argc, const char** argv )
   int sysRc = NO_ERROR ;
 
   // -------------------------------------------------------
-  // getFlagAttr empty list
+  // findLongAttr empty list
   // -------------------------------------------------------
-  doIntTest( "empty cmdln list",
-             1 ,
-             getFlagAttr,
-             "task" ) ;
+  doPointTest( "empty list", \
+          RC_IS_NULL               , \
+          findLongAttr     , \
+          "output"         ) ;
 
   // -------------------------------------------------------
-  // getStrArrayAttr
+  // findLongAttr null pointer 
   // -------------------------------------------------------
-  doPointTest( "some attribute will be found " , \
-               RC_IS_NULL                      , \
-               getStrArrayAttr                 , \
-               "output"                        ) ;
+  doPointTest( "null pointer", \
+          RC_IS_NULL         , \
+          findLongAttr       , \
+          NULL         ) ;
 
-  initCmdLnCfg() ;
-
-  // -------------------------------------------------------
-  // getFlagAttr empty list
-  // -------------------------------------------------------
-  {
-    const char *cmdln[] = { "program", "--task", NULL } ;
-    getCmdLnAttr( 1, cmdln ) ;
-
-    doIntTest( "empty attr found", 
-               0 ,
-               getFlagAttr,
-               "task" ) ;
-  }
-
-  // -------------------------------------------------------
-  // getStrArrayAttr
-  // -------------------------------------------------------
-#if(0)
-  doPointTest( "some attribute will be found " , \
-               RC_NOT_NULL                     , \
-               getStrArrayAttr                 , \
-               "output"                        ) ;
-#endif
 _door:
   return sysRc ;
 }

@@ -536,7 +536,11 @@ _door:
 /******************************************************************************/
 tCmdLnAttr* findShortAttr( const char shortName )
 {
-  tCmdLnAttr *p = anchorAttr->next ;
+  tCmdLnAttr *p ;
+
+  if( anchorAttr == NULL ) goto _door ;
+
+  p = anchorAttr->next ;
 
   if( p == NULL ) goto _door ;
 
@@ -556,15 +560,12 @@ _door:
 /******************************************************************************/
 tCmdLnAttr* findLongAttr( const char *longName )
 {
-//char shortName ;
   tCmdLnCfg  *cfgNode ;
   tCmdLnAttr *attrNode = NULL ;
 
   cfgNode = findLongNameCfg( longName ) ;
 
   if( cfgNode == NULL ) goto _door ;
-
-//shortName = cfgNode->shortAttr ;
 
   attrNode = findShortAttr( cfgNode->shortAttr ) ;
 

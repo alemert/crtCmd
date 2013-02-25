@@ -1,0 +1,4 @@
+# TEST START findLongAttr >>empty list          << test/src/t_find_002.c(0040)
+# TEST OK    findLongAttr >>empty list          << test/src/t_find_002.c(0040)
+# TEST START findLongAttr >>null pointer        << test/src/t_find_002.c(0048)
+# TEST OK    findLongAttr >>null pointer        << test/src/t_find_002.c(0048)
