@@ -947,6 +947,8 @@ int initCmdLnCond()
   {
     print SRC "
   anchorCond = (tCmdLnCond*) malloc(sizeof(tCmdLnCond)) ;
+
+  return sysRc ;
 }
   ";
     return ;
