@@ -40,7 +40,23 @@ ROLLOUT_INC =
 # ------------------------------------------------------------------------------
 # do not change includes
 # ------------------------------------------------------------------------------
-include $(MAKE_INCLUDE_PATH)/general.modules.mk
+#include $(MAKE_INCLUDE_PATH)/general.modules.mk
+
+include $(MAKE_INCLUDE_PATH)/path.mk
+include $(MAKE_INCLUDE_PATH)/compiler.mk
+
+include $(MAKE_INCLUDE_PATH)/rules.mk
+
+include $(MAKE_INCLUDE_PATH)/depend.mk
+include $(MAKE_INCLUDE_PATH)/version.mk
+include $(MAKE_INCLUDE_PATH)/cmdln.mk
+include $(MAKE_INCLUDE_PATH)/rollout.script.mk
+include $(MAKE_INCLUDE_PATH)/clean.mk
+include $(MAKE_INCLUDE_PATH)/help.mk
+include $(MAKE_INCLUDE_PATH)/vara.mk
+include $(MAKE_INCLUDE_PATH)/svn.mk
+
+
 
 CLO=$(BIN_BASE)/clo.pl
 all : $(CLO)
