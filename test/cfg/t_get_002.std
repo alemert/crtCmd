@@ -2,3 +2,7 @@
 # TEST OK    getFlagAttr >>empty cmdln list    << test/src/t_get_002.c(0040)
 # TEST START getStrArrayAttr >>some attribute will be found << test/src/t_get_002.c(0048)
 # TEST OK    getStrArrayAttr >>some attribute will be found << test/src/t_get_002.c(0048)
+# TEST START getFlagAttr >>empty attr found    << test/src/t_get_002.c(0062)
+# TEST OK    getFlagAttr >>empty attr found    << test/src/t_get_002.c(0062)
+# TEST START getStrArrayAttr >>some attribute will be found << test/src/t_get_002.c(0075)
+# TEST OK    getStrArrayAttr >>some attribute will be found << test/src/t_get_002.c(0075)

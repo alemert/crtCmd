@@ -54,7 +54,7 @@ int main( int argc, const char** argv )
   // -------------------------------------------------------
   {
     const char *cmdln[] = { "program", "--task", NULL } ;
-    getCmdLnAttr( 1, cmdln ) ;
+    getCmdLnAttr( 2, cmdln ) ;
 
     doIntTest( "empty attr found", 
                0 ,
@@ -65,11 +65,15 @@ int main( int argc, const char** argv )
   // -------------------------------------------------------
   // getStrArrayAttr
   // -------------------------------------------------------
-#if(0)
-  doPointTest( "some attribute will be found " , \
-               RC_NOT_NULL                     , \
-               getStrArrayAttr                 , \
-               "output"                        ) ;
+#if(1)
+  {
+    const char *cmdln[] = { "program", "--output", "some/text", NULL } ;
+    getCmdLnAttr( 3, cmdln ) ;
+    doPointTest( "some attribute will be found " , \
+                 RC_NOT_NULL                     , \
+                 getStrArrayAttr                 , \
+                 "output"                        ) ;
+  }
 #endif
 _door:
   return sysRc ;
