@@ -437,7 +437,7 @@ void revision( )
 foreach my $library (@library)
 {
   $library =~ s/\..+$// ;
-  print SRC "  revOutver4lib_$library() ;" ;
+  print SRC "  revOutver4lib_$library() ;\n" ;
 }
   print SRC "
 }

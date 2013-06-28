@@ -2,3 +2,4 @@
 	problem solved in all get{Type}ArrayAttr functions
 0002: segmentation fault in usage() if anchorCfg empty
 0003: missing return in initCmdLnCond() if empty cond list
+0004: additional \n in void revision() printing out libraries
