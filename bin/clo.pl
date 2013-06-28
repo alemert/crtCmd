@@ -438,6 +438,7 @@ foreach my $library (@library)
 {
   $library =~ s/\..+$// ;
   print SRC "  revOutver4lib_$library() ;\n" ;
+  print SRC "  printf(\"\\n\") ; " ;
 }
   print SRC "
 }
