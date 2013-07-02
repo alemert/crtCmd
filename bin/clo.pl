@@ -517,7 +517,7 @@ void usage( )
     p = p->next ;                                 //
     if( p->appliance == CMDL_APPL_OPT )           //
     {                                             //
-      fprintf(stderr,\" [-%c \", p->shortAttr );  //
+      fprintf(stderr,\" [-%c\", p->shortAttr );  //
       switch ( p->type )                          //
       {                                           //
         case CMDL_TYPE_EMPTY :                    //
