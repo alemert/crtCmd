@@ -449,6 +449,7 @@ foreach my $library (@library)
 void usage( )
 {
   tCmdLnCfg *p ;
+  int i ; 
 
   fprintf(stderr,\"%s \",PROGRAM_NAME ) ;         // print the name of the prg
                                                   //
@@ -459,7 +460,55 @@ void usage( )
   {                                               //
     p = p->next ;                                 //
     if( p->appliance == CMDL_APPL_OBL )           //
+    {
       fprintf(stderr,\" -%c\", p->shortAttr );    //
+      switch ( p->type )                          //
+      {                                           //
+        case CMDL_TYPE_EMPTY :                    //
+        {                                         //
+          break ;                                 //
+        }                                         //
+        case CMDL_TYPE_INT :                      //
+        {                                         //
+          if( p->element == 0 )                   //
+          {                                       //
+            fprintf(stderr,\" nr\");              //
+            break ;                               //
+          }                                       //
+          for( i=0; i< p->element; i++ )          //
+          {                                       //
+            fprintf(stderr,\" %d\",p->intValue[i]);
+          }                                       //
+          break ;                                 //
+        }                                         //
+        case CMDL_TYPE_CHR :                      //
+        {                                         //
+          if( p->element == 0 )                   //
+          {                                       //
+            fprintf(stderr,\" %c\",p->shortAttr); //
+            break ;                               //
+          }                                       //
+          for( i=0; i< p->element; i++ )          //
+          {                                       //
+            fprintf(stderr,\" %c\",p->chrValue[i]);
+          }                                       //
+          break ;                                 //
+        }                                         //
+        case CMDL_TYPE_STR :                      //
+        {                                         //
+          if( p->element == 0 )                   //
+          {                                       //
+            fprintf(stderr,\" %s\",p->longAttr);  //
+            break ;                               //
+          }                                       //
+          for( i=0; i< p->element; i++ )          //
+          {                                       //
+            fprintf(stderr,\" %s\",p->strValue[i]);
+          }                                       //
+          break ;                                 //
+        }                                         //
+      }                                           //
+    }                                             //
   }                                               //
                                                   //
   p = anchorCfg ;                                 //
@@ -467,7 +516,56 @@ void usage( )
   {                                               //
     p = p->next ;                                 //
     if( p->appliance == CMDL_APPL_OPT )           //
-      fprintf(stderr,\" [-%c]\", p->shortAttr );  //
+    {                                             //
+      fprintf(stderr,\" [-%c \", p->shortAttr );  //
+      switch ( p->type )                          //
+      {                                           //
+        case CMDL_TYPE_EMPTY :                    //
+        {                                         //
+          break ;                                 //
+        }                                         //
+        case CMDL_TYPE_INT :                      //
+        {                                         //
+          if( p->element == 0 )                   //
+          {                                       //
+            fprintf(stderr,\" nr\");              //
+            break ;                               //
+          }                                       //
+          for( i=0; i< p->element; i++ )          //
+          {                                       //
+            fprintf(stderr,\" %d\",p->intValue[i]);
+          }                                       //
+          break ;                                 //
+        }                                         //
+        case CMDL_TYPE_CHR :                      //
+        {                                         //
+          if( p->element == 0 )                   //
+          {                                       //
+            fprintf(stderr,\" %c\",p->shortAttr); //
+            break ;                               //
+          }                                       //
+          for( i=0; i< p->element; i++ )          //
+          {                                       //
+            fprintf(stderr,\" %c\",p->chrValue[i]);
+          }                                       //
+          break ;                                 //
+        }                                         //
+        case CMDL_TYPE_STR :                      //
+        {                                         //
+          if( p->element == 0 )                   //
+          {                                       //
+            fprintf(stderr,\" %s\",p->longAttr);  //
+            break ;                               //
+          }                                       //
+          for( i=0; i< p->element; i++ )          //
+          {                                       //
+            fprintf(stderr,\" %s\",p->strValue[i]);
+          }                                       //
+          break ;                                 //
+        }                                         //
+      }                                           //
+      fprintf(stderr,\"]\");                      //
+    }                                             //
   }                                               //
                                                   //
   fprintf(stderr,\"\\n%s options:\\n\",\"".$_prg->{help}."\" ) ;

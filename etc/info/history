@@ -1,1 +1,2 @@
 001 version 0.0.3 rollout crtCmd, not all functions were tested in unit test
+002 version 0.0.6 improved help output
