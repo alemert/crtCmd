@@ -455,6 +455,18 @@ void usage( )
 
   fprintf(stderr,\"%s \",PROGRAM_NAME ) ;         // print the name of the prg
                                                   //
+ if( anchorCfg == NULL )                          // if usage() is called
+ {                                                //  directly from main(),
+    initCmdLnCfg() ;                              //  before HandleCmdLn(),
+    initCmdLnCond() ;                             //  than anchorCfg==null,
+  }                                               //  than help text has to be
+                                                  //  initialized
+  if( anchorCfg == NULL )                         //
+  {                                               //
+    fprintf( stderr, \"\\n\\tno help available\\n\");//  
+    goto _door ;                                  // initializing has failed
+  }                                               //
+                                                  //
   if( anchorCfg == NULL ) goto _door ;            //
                                                   //
   p = anchorCfg ;                                 // print obligatory attr
@@ -462,7 +474,7 @@ void usage( )
   {                                               //
     p = p->next ;                                 //
     if( p->appliance == CMDL_APPL_OBL )           //
-    {
+    {                                             //
       fprintf(stderr,\" -%c\", p->shortAttr );    //
       switch ( p->type )                          //
       {                                           //
