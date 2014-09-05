@@ -321,6 +321,8 @@ typedef struct sCmdLnCond tCmdLnCond ;
 /******************************************************************************/
 /*   P R O T O T Y P E S                                                      */
 /******************************************************************************/
+void usage();
+
 tCmdLnCfg*  findShortNameCfg( char shortName ) ;
 tCmdLnCfg*  findLongNameCfg( const char *longName ) ;
 tCmdLnAttr* findShortAttr( const char shortName ) ;
