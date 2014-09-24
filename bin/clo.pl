@@ -163,7 +163,7 @@ sub readCfg
 
     if( $section eq 'condition' ) 
     {
-      $line =~ /^\s*(\w+)\s+(\w+)\s+(\w+)\s*$/ ||
+      $line =~ /^\s*(\w+)\s+([!\w]+)\s+(\w+)\s*$/ ||
         die "unknown format $line in section $section" ;
 
       my $operator = $2 ;
