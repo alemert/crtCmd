@@ -4,3 +4,4 @@
 0003: missing return in initCmdLnCond() if empty cond list
 0004: additional \n in void revision() printing out libraries
 0007: clo.pl bug: not working with !options solved
+0008: clo.pl return pointer changed to const pointer

@@ -334,13 +334,13 @@ int initCmdLnCond() ;
 int getCmdLnAttr( int argc, const char* argv[] ) ;
 int handleCmdLn(  int argc, const char* argv[] ) ;
 
-int    getFlagAttr(       const char *longName ) ;
-int*   getIntArrayAttr(   const char *longName ) ;
-int    getIntAttr(        const char *longName ) ;
-char** getStrArrayAttr(   const char *longName ) ;
-char*  getStrAttr(        const char *longName ) ;
-char*  getCharArrayAttr(  const char *longName ) ;
-char   getCharAttr(       const char *longName ) ;
+int          getFlagAttr(       const char *longName ) ;
+const int*   getIntArrayAttr(   const char *longName ) ;
+int          getIntAttr(        const char *longName ) ;
+const char** getStrArrayAttr(   const char *longName ) ;
+const char*  getStrAttr(        const char *longName ) ;
+const char*  getCharArrayAttr(  const char *longName ) ;
+char         getCharAttr(       const char *longName ) ;
 
 int getAttrSize( const char *longName ) ;
 
@@ -719,7 +719,7 @@ int getFlagAttr( const char *longName )
 /******************************************************************************/
 /* get command line attribute of type *int belonging to longName              */
 /******************************************************************************/
-int* getIntArrayAttr( const char *longName )
+const int* getIntArrayAttr( const char *longName )
 {
   tCmdLnAttr *nodeAttr ;
   int *p = NULL ;
@@ -733,7 +733,7 @@ int* getIntArrayAttr( const char *longName )
   p = nodeAttr->intValue ; 
   
 _door :
-  return p ; 
+  return (const int *) p ; 
 }
 
 /******************************************************************************/
@@ -744,7 +744,7 @@ int getIntAttr( const char *longName )
   int *p ; 
   int rc ;
 
-  p = getIntArrayAttr( longName ) ;
+  p = (int*) getIntArrayAttr( longName ) ;
 
   if( p == NULL ) 
   {
@@ -767,7 +767,7 @@ _door :
 /******************************************************************************/
 /* get command line attribute of type *string belonging to longName           */
 /******************************************************************************/
-char** getStrArrayAttr( const char* longName ) 
+const char** getStrArrayAttr( const char* longName ) 
 {
   tCmdLnAttr *nodeAttr ;
 
@@ -788,12 +788,12 @@ _door :
 /******************************************************************************/
 /* get command line attribute of type string belonging to longName           */
 /******************************************************************************/
-char*  getStrAttr( const char* longName ) 
+const char*  getStrAttr( const char* longName ) 
 {
   char **s ;
   char *rc = NULL ;
 
-  s = getStrArrayAttr( longName ) ;
+  s = (char**) getStrArrayAttr( longName ) ;
 
   if( s == NULL ) goto _door ;
 
@@ -807,7 +807,7 @@ _door :
 /******************************************************************************/
 /* get command line attribute of type *char belonging to longName            */
 /******************************************************************************/
-char*  getCharArrayAttr( const char* longName ) 
+const char*  getCharArrayAttr( const char* longName ) 
 {
   tCmdLnAttr *nodeAttr ;
 
