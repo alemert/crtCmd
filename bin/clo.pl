@@ -782,7 +782,7 @@ const char** getStrArrayAttr( const char* longName )
   s = nodeAttr->strValue ; 
   
 _door :
-  return (char**) s ; 
+  return (const char**) s ; 
 }
 
 /******************************************************************************/
