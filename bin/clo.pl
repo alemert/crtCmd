@@ -30,8 +30,8 @@ my $cond_opr_gt    = '>' ;
 my $cond_opr_lt    = '<' ;
 my $cond_opr_eq    = '=' ;
 
-my $macroStr       = 'argc' ;
-my $macroId        = 1    ;
+my $macroArgcStr   = 'argc' ;
+my $macroArgcId    = 1    ;
 
 ################################################################################
 # command line
@@ -297,7 +297,7 @@ sub printHead_h
 #define COND_OPR_LT         \'$cond_opr_lt\'
 #define COND_OPR_EQ         \'$cond_opr_eq\'
 
-#define MACRO_ARGC_STR      \"$macroId\"
+#define MACRO_ARGC_STR      \"$macroArgcId\"
 #define MACRO_ARGC_ID       '1'
 
 #define PROGRAM_NAME   \"".$_prg->{name}."\" 
@@ -348,7 +348,7 @@ struct sCmdLnCond
 
 struct sCmdLnMacro
 {
-  enum { nr = MACRO_ARGC_ID } macro ;
+  enum { $macroArgcStr = MACRO_ARGC_ID } macro ;
   char    opr   ;
   int     value ;
   struct sCmdLnMacro *next ;
@@ -1170,7 +1170,8 @@ int initCmdLnMacro()
   {
     print SRC "
   return sysRc ;
-  ";
+}
+    ";
   }
   else
   {
@@ -1190,22 +1191,26 @@ int initCmdLnMacro()
   q = (tCmdLnMacro*) malloc( sizeof(tCmdLnMacro) ) ; 
   if( errno != 0 ) { sysRc = errno ; goto _door ; }
       ";
-      if( $macro eq $macroStr )
+      if( $macro eq $macroArgcStr )
       {
         print SRC "
   q->macro = MACRO_ARGC_ID ;
   q->opr   = \'".$_macro->{$macro}{opr}."\' ;
   q->value = $_macro->{$macro}{value} ;
+  q->next=NULL;
+  p->next = q;
+  p=q;
+
         ";
       }
     }
-  }
   print SRC "
   _door:
   return sysRc ;
        
 }
   ";
+  }   # else scalar keys
   close SRC ;
 }
 
@@ -1634,29 +1639,27 @@ int handleCmdLn( int argc, const char* argv[])
       goto _doorDefault ;
     }
   }
-";
-  if( scalar keys %$_macro )
-  {
-print SRC "
-  sysRc = checkMacro( argc, argv );
-  if( sysRc != 0 )
-  {
-    goto _doorErr ;
-  } "
-  } ;
 
-print SRC "
-  initCmdLnCfg() ;
-  initCmdLnCond() ;
+  sysRc = initCmdLnCfg() ;
+  if( sysRc !=0 ) goto _doorErr ;
+
+  sysRc = initCmdLnCond() ;
+  if( sysRc !=0 ) goto _doorErr ;
+
+  sysRc = initCmdLnMacro() ;
+  if( sysRc !=0 ) goto _doorErr ;
 
   sysRc = getCmdLnAttr( argc, argv ) ;
-  if( sysRc ) goto _doorErr ;
+  if( sysRc !=0 ) goto _doorErr ;
 
   sysRc = checkCmdLn( ) ;
-  if( sysRc ) goto _doorErr ;
+  if( sysRc !=0 ) goto _doorErr ;
+
+  sysRc = checkMacro( argc, argv );
+  if( sysRc != 0 ) { goto _doorErr ; } ;
 
 _doorErr :
-  if( sysRc ) usage( argv[0] ) ;
+  if( sysRc !=0 ) usage( argv[0] ) ;
 
 _doorDefault :
   return sysRc ;
@@ -1673,6 +1676,7 @@ int checkMacro(  int argc, const char* UNUSED(argv[]) )
   
   while( pMacro->next != NULL )         // break at last conditional node 
   {
+    pMacro = pMacro->next ;
     switch( pMacro->macro ) 
     {
       // ---------------------------------------------------
@@ -1701,6 +1705,7 @@ int checkMacro(  int argc, const char* UNUSED(argv[]) )
             goto _door;
           }
         }
+        break;
       }
       // ---------------------------------------------------
       // should be check by perl, can not occure
@@ -1711,8 +1716,8 @@ int checkMacro(  int argc, const char* UNUSED(argv[]) )
         goto _door;
       }
     }
-    pMacro = pMacro->next;
   }
+
   _door:
   return sysRc;
 }
