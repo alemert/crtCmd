@@ -2,3 +2,4 @@
 002 version 0.0.6 improved help output
 003 version 0.0.8 clo.pl return pointer changed to const pointer
 004 version 0.0.9 macro (argc) added to clo.pl
+004 version 0.1.1 macro (argc) added to clo.pl, fixing bugs on macro

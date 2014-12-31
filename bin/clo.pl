@@ -1178,6 +1178,8 @@ int initCmdLnMacro()
   tCmdLnMacro *p ; 
   tCmdLnMacro *q ; 
 
+  anchorMacro = (tCmdLnAttr*) malloc(sizeof(tCmdLnMacro)) ;
+
   p=anchorMacro ;
   p->next=NULL;
 
@@ -1708,8 +1710,8 @@ int checkMacro(  int argc, const char* UNUSED(argv[]) )
         sysRc = 1 ;
         goto _door;
       }
-
     }
+    pMacro = pMacro->next;
   }
   _door:
   return sysRc;
