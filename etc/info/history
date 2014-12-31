@@ -1,2 +1,4 @@
 001 version 0.0.3 rollout crtCmd, not all functions were tested in unit test
 002 version 0.0.6 improved help output
+003 version 0.0.8 clo.pl return pointer changed to const pointer
+004 version 0.0.9 macro (argc) added to clo.pl

@@ -26,6 +26,12 @@ my $cond_opr_xor   = '^' ;
 my $cond_opr_nor   = 'o' ;
 my $cond_opr_nand  = 'a' ;
 my $cond_opr_nxor  = 'x' ;
+my $cond_opr_gt    = '>' ;
+my $cond_opr_lt    = '<' ;
+my $cond_opr_eq    = '=' ;
+
+my $macroStr       = 'argc' ;
+my $macroId        = 1    ;
 
 ################################################################################
 # command line
@@ -136,6 +142,9 @@ sub readCfg
       next ;
     }
 
+    # ------------------------------------------------------
+    # section attribute
+    # ------------------------------------------------------
     if( $section eq 'attribute' ) 
     {
       $line =~ /^\s*(\S+)\s*=\s*(.+)$/ || 
@@ -161,20 +170,17 @@ sub readCfg
       next ;
     }
 
+    # ------------------------------------------------------
+    # section condition (incl macros
+    # ------------------------------------------------------
     if( $section eq 'condition' ) 
     {
-      $line =~ /^\s*(\w+)\s+([!\w]+)\s+(\w+)\s*$/ ||
+      $line =~ /^\s*(\$?\w+)\s+([!\w]+)\s+(\w+)\s*$/ ||
         die "unknown format $line in section $section" ;
 
       my $operator = $2 ;
       my $attr1    = $1 ;
       my $attr2    = $3 ;
-
-      exists $cfg{attr}{$attr1}{short} || 
-        die "condition $line points to unknown attribute $attr1" ;
-
-      exists $cfg{attr}{$attr2}{short} || 
-        die "condition $line points to unknown attribute $attr2" ;
 
       if(    $operator eq 'and'  ) { $operator = $cond_opr_and  ; }
       elsif( $operator eq 'or'   ) { $operator = $cond_opr_or   ; }
@@ -182,7 +188,29 @@ sub readCfg
       elsif( $operator eq '!and' ) { $operator = $cond_opr_nand ; }
       elsif( $operator eq '!or'  ) { $operator = $cond_opr_nor  ; }
       elsif( $operator eq '!xor' ) { $operator = $cond_opr_nxor ; }
+      elsif( $operator eq 'gt'   ) { $operator = $cond_opr_gt   ; }
+      elsif( $operator eq 'lt'   ) { $operator = $cond_opr_lt   ; }
+      elsif( $operator eq 'eq'   ) { $operator = $cond_opr_eq   ; }
       else { die "operator: $operator not valid" ;    }
+
+      # ----------------------------------------------------
+      # handle macros
+      # ----------------------------------------------------
+      if( $attr1 =~ s/^\$// )      # macros: attr1 starts with '$'
+      {
+        $cfg{macro}{$attr1}{opr}   = $operator;
+        $cfg{macro}{$attr1}{value} = $attr2   ;
+        next;
+      }
+
+      # ----------------------------------------------------
+      # handle conditions
+      # ----------------------------------------------------
+      exists $cfg{attr}{$attr1}{short} || 
+        die "condition $line points to unknown attribute $attr1" ;
+
+      exists $cfg{attr}{$attr2}{short} || 
+        die "condition $line points to unknown attribute $attr2" ;
 
       $cfg{cond}{$condCnt}{attr1} = $cfg{attr}{$attr1}{short} ;
       $cfg{cond}{$condCnt}{attr2} = $cfg{attr}{$attr2}{short} ;
@@ -239,7 +267,7 @@ sub printHead_h
 /******************************************************************************/
 
 /******************************************************************************/
-/*   I N C L U D E S                               */
+/*   I N C L U D E S                                                          */
 /******************************************************************************/
 #include <limits.h>
 
@@ -265,10 +293,17 @@ sub printHead_h
 #define COND_OPR_NOT_AND    \'$cond_opr_nand\'  
 #define COND_OPR_NOT_XOR    \'$cond_opr_nxor\'  
 
+#define COND_OPR_GT         \'$cond_opr_gt\'
+#define COND_OPR_LT         \'$cond_opr_lt\'
+#define COND_OPR_EQ         \'$cond_opr_eq\'
+
+#define MACRO_ARGC_STR      \"$macroId\"
+#define MACRO_ARGC_ID       '1'
+
 #define PROGRAM_NAME   \"".$_prg->{name}."\" 
 
 /******************************************************************************/
-/*   M A C R O S                                           */
+/*   M A C R O S                                                              */
 /******************************************************************************/
 
 /******************************************************************************/
@@ -311,12 +346,22 @@ struct sCmdLnCond
   struct sCmdLnCond *next ;
 } ;
 
+struct sCmdLnMacro
+{
+  enum { nr = MACRO_ARGC_ID } macro ;
+  char    opr   ;
+  int     value ;
+  struct sCmdLnMacro *next ;
+} ;
+
+
 /******************************************************************************/
 /*   T Y P E S                                                                */
 /******************************************************************************/
-typedef struct sCmdLnCfg  tCmdLnCfg  ;
-typedef struct sCmdLnAttr tCmdLnAttr ;
-typedef struct sCmdLnCond tCmdLnCond ;
+typedef struct sCmdLnCfg   tCmdLnCfg  ;
+typedef struct sCmdLnAttr  tCmdLnAttr ;
+typedef struct sCmdLnCond  tCmdLnCond ;
+typedef struct sCmdLnMacro tCmdLnMacro;
 
 /******************************************************************************/
 /*   P R O T O T Y P E S                                                      */
@@ -333,6 +378,7 @@ int initCmdLnCond() ;
 
 int getCmdLnAttr( int argc, const char* argv[] ) ;
 int handleCmdLn(  int argc, const char* argv[] ) ;
+int checkMacro(   int argc, const char* argv[] ) ;
 
 int          getFlagAttr(       const char *longName ) ;
 const int*   getIntArrayAttr(   const char *longName ) ;
@@ -398,9 +444,22 @@ sub printHead_c
 /******************************************************************************/
 /*   G L O B A L S                                                            */
 /******************************************************************************/
-tCmdLnCfg*  anchorCfg  ;
-tCmdLnAttr* anchorAttr ;
-tCmdLnCond* anchorCond ;
+tCmdLnCfg*   anchorCfg   ;
+tCmdLnAttr*  anchorAttr  ;
+tCmdLnCond*  anchorCond  ;
+tCmdLnMacro* anchorMacro ;
+
+/******************************************************************************/
+/*   P R A G M A                                                              */
+/******************************************************************************/
+#ifdef UNUSED
+#elif  defined(__GNUC__)
+#      define UNUSED(x) UNUSED_ ## x __attribute__((unused))
+#elif  defined(__LCLINT__)
+#      define UNUSED(x) /*\@unused\@*/ x
+#else
+#      define UNUSED(x) x
+#endif
 
 /******************************************************************************/
 /*   F U N C T I O N S                                                        */
@@ -854,6 +913,7 @@ sub printInit
   my $srcFile = $_[0] ;
   my $_cfg    = $_[1] ;
   my $_cond   = $_[2] ;
+  my $_macro  = $_[3] ;
 # my $_prg    = $_[3] ;
 
   open SRC, ">>$cFile" ;
@@ -886,7 +946,7 @@ int initCmdLnCfg()
     print SRC "  q = (tCmdLnCfg*) malloc(sizeof(tCmdLnCfg)) ;
 
   /****************************************************************************/
-  /* command line attribte $long                    */
+  /* command line attribte $long                                  */
   /****************************************************************************/
   q->longAttr = (char*) malloc( sizeof(\"$long\\0\") );
   memcpy( q->longAttr, \"$long\", sizeof(\"$long\\0\") );
@@ -1096,6 +1156,53 @@ int initCmdLnCond()
 _door:
   return sysRc ;
 }
+
+/******************************************************************************/
+/* init macros                                                                */
+/******************************************************************************/
+int initCmdLnMacro()
+{
+  int sysRc = 0 ;
+  errno = 0 ;
+";
+
+  if( scalar keys %$_macro == 0 )
+  {
+    print SRC "
+  return sysRc ;
+  ";
+  }
+  else
+  {
+    print SRC "
+  tCmdLnMacro *p ; 
+  tCmdLnMacro *q ; 
+
+  p=anchorMacro ;
+  p->next=NULL;
+
+    ";
+    foreach my $macro (keys %$_macro)
+    {
+      print SRC "
+  q = (tCmdLnMacro*) malloc( sizeof(tCmdLnMacro) ) ; 
+  if( errno != 0 ) { sysRc = errno ; goto _door ; }
+      ";
+      if( $macro eq $macroStr )
+      {
+        print SRC "
+  q->macro = MACRO_ARGC_ID ;
+  q->opr   = \'".$_macro->{$macro}{opr}."\' ;
+  q->value = $_macro->{$macro}{value} ;
+        ";
+      }
+    }
+  }
+  print SRC "
+  _door:
+  return sysRc ;
+       
+}
   ";
   close SRC ;
 }
@@ -1110,7 +1217,7 @@ sub printGet
 
 print SRC "
 /******************************************************************************/
-/* analyse command line attributes                                      */
+/* analyse command line attributes                                            */
 /******************************************************************************/
 int getCmdLnAttr(int argc, const char* argv[] )
 {
@@ -1244,7 +1351,7 @@ int getCmdLnAttr(int argc, const char* argv[] )
           }                                         //
           nodeAttr->chrValue[k] = *argv[j] ;        // convert str to char
         }                                           //
-        break ;                            //
+        break ;                                     //
       }                                             //
                                                     //
       case CMDL_TYPE_STR    :                       // handle string (char*)
@@ -1310,7 +1417,7 @@ int checkCmdLn()
   {                                           //
     pCfg = pCfg->next ;                       // anchor is empty
                                               //
-    pAtt = findShortAttr( pCfg->shortAttr ) ;      // search for attr node (cmdLn) 
+    pAtt = findShortAttr( pCfg->shortAttr ) ; // search for attr node (cmdLn) 
                                               //   that correspods config node
     if( pCfg->appliance == CMDL_APPL_OBL  &&  //
         pAtt == NULL  )                       // for appliance = obligatory
@@ -1357,7 +1464,7 @@ int checkCmdLn()
             goto _door ;                      //
           }                                   //
         }                                     //
-        break ;                        //
+        break ;                               //
                                               //
       // ---------------------------------------
       // check data type char
@@ -1390,7 +1497,7 @@ int checkCmdLn()
             goto _door ;                      //
           }                                   //
         }                                     //
-        break ;                          //
+        break ;                               //
                                               //
       // ---------------------------------------
       // check data type string (char*)
@@ -1407,7 +1514,7 @@ int checkCmdLn()
         }                                     //
         for( i=0; i<pAtt->element; i++ )      //
         {                                     // only special values given by
-          found = 0 ;                    //   config (pCfg) are allowed
+          found = 0 ;                         //   config (pCfg) are allowed
           for(j=0;j<pCfg->element;j++)        //
           {                                   // check if every value given by
             if(strcmp(pAtt->strValue[i],      //   pAttr (cmdln) can be found in
@@ -1434,8 +1541,8 @@ int checkCmdLn()
   {                                           //
     pCnd = pCnd->next ;                       // 
                                               //
-    pAtt1 = findShortAttr( pCnd->attr1 ) ;         //
-    pAtt2 = findShortAttr( pCnd->attr2 ) ;         //
+    pAtt1 = findShortAttr( pCnd->attr1 ) ;    //
+    pAtt2 = findShortAttr( pCnd->attr2 ) ;    //
                                               //
     switch( pCnd->opr )                       //
     {                                         //
@@ -1497,6 +1604,7 @@ sub printHandler
 {
   my $srcFile = $_[0] ;
   my $_cfg    = $_[1] ;
+  my $_macro  = $_[2] ;
 
   open SRC, ">>$cFile" ;
 
@@ -1504,7 +1612,7 @@ print SRC "
 /******************************************************************************/
 /* handle command line attributes                                             */
 /******************************************************************************/
-int handleCmdLn(int argc, const char* argv[])
+int handleCmdLn( int argc, const char* argv[])
 {
   int sysRc ;
 
@@ -1524,7 +1632,18 @@ int handleCmdLn(int argc, const char* argv[])
       goto _doorDefault ;
     }
   }
+";
+  if( scalar keys %$_macro )
+  {
+print SRC "
+  sysRc = checkMacro( argc, argv );
+  if( sysRc != 0 )
+  {
+    goto _doorErr ;
+  } "
+  } ;
 
+print SRC "
   initCmdLnCfg() ;
   initCmdLnCond() ;
 
@@ -1539,6 +1658,61 @@ _doorErr :
 
 _doorDefault :
   return sysRc ;
+}
+
+/******************************************************************************/
+/* check macro                                                                */
+/******************************************************************************/
+int checkMacro(  int argc, const char* UNUSED(argv[]) )
+{
+  int sysRc = 0 ;
+
+  tCmdLnMacro *pMacro = anchorMacro ;
+  
+  while( pMacro->next != NULL )         // break at last conditional node 
+  {
+    switch( pMacro->macro ) 
+    {
+      // ---------------------------------------------------
+      // check the number of command line arguments
+      // ---------------------------------------------------
+      case MACRO_ARGC_ID:
+      {
+        switch( pMacro->opr )
+        {
+          case COND_OPR_GT:
+          {
+            if( argc > pMacro->value ) break;
+            sysRc=2;
+            goto _door;
+          }
+          case COND_OPR_LT:
+          {
+            if( argc < pMacro->value ) break;
+            sysRc=2;
+            goto _door;
+          }
+          case COND_OPR_EQ:
+          {
+            if( argc == pMacro->value ) break;
+            sysRc=2;
+            goto _door;
+          }
+        }
+      }
+      // ---------------------------------------------------
+      // should be check by perl, can not occure
+      // ---------------------------------------------------
+      default :
+      {
+        sysRc = 1 ;
+        goto _door;
+      }
+
+    }
+  }
+  _door:
+  return sysRc;
 }
 ";
   close SRC ;
@@ -1557,11 +1731,11 @@ if( $fileType eq 'h' )
   exit ;
 }
 
-printHead_c   $cFile, $cfg{attr} , $cfg{prg} ;
-printInternal $cFile, $cfg{attr} , $cfg{prg} ;
-printInit     $cFile, $cfg{attr} , $cfg{cond} ;
-printGet      $cFile, $cfg{attr} ;
-printAnalyse  $cFile, $cfg{attr} ;
-printHandler  $cFile, $cfg{attr} ;
+printHead_c   $cFile, $cfg{attr}, $cfg{prg} ;
+printInternal $cFile, $cfg{attr}, $cfg{prg} ;
+printInit     $cFile, $cfg{attr}, $cfg{cond}, $cfg{macro} ;
+printGet      $cFile, $cfg{attr};
+printAnalyse  $cFile, $cfg{attr};
+printHandler  $cFile, $cfg{attr}, $cfg{macro} ;
 
 
