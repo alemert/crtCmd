@@ -1179,7 +1179,7 @@ int initCmdLnMacro()
   tCmdLnMacro *p ; 
   tCmdLnMacro *q ; 
 
-  anchorMacro = (tCmdLnAttr*) malloc(sizeof(tCmdLnMacro)) ;
+  anchorMacro = (tCmdLnMacro*) malloc(sizeof(tCmdLnMacro)) ;
 
   p=anchorMacro ;
   p->next=NULL;
