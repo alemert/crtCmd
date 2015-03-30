@@ -1645,10 +1645,21 @@ int handleCmdLn( int argc, const char* argv[])
 
   sysRc = initCmdLnCond() ;
   if( sysRc !=0 ) goto _doorErr ;
+  ";
+  close SRC ;
 
-  sysRc = initCmdLnMacro() ;
-  if( sysRc !=0 ) goto _doorErr ;
+  if( scalar keys %$_macro )
+  {
+  open SRC, ">>$cFile" ;
+  print SRC "
+    sysRc = initCmdLnMacro() ;
+    if( sysRc !=0 ) goto _doorErr ;
+  ";
+  close SRC;
+  }
 
+  open SRC, ">>$cFile" ;
+  print SRC "
   sysRc = getCmdLnAttr( argc, argv ) ;
   if( sysRc !=0 ) goto _doorErr ;
 
