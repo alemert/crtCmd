@@ -375,6 +375,7 @@ tCmdLnAttr* findLongAttr(  const char *longName ) ;
 
 int initCmdLnCfg() ;
 int initCmdLnCond() ;
+int initCmdLnMacro();
 
 int getCmdLnAttr( int argc, const char* argv[] ) ;
 int handleCmdLn(  int argc, const char* argv[] ) ;
@@ -1124,10 +1125,10 @@ int initCmdLnCond()
   return sysRc ;
 }
   ";
-    return ;
   }
-
-  print SRC "
+  else
+  {
+    print SRC "
   tCmdLnCond *p ;
   tCmdLnCond *q ;
 
@@ -1138,9 +1139,9 @@ int initCmdLnCond()
   p->next = NULL ;
   ";
 
-  foreach my $condId ( keys %$_cond )
-  {
-    print SRC "
+    foreach my $condId ( keys %$_cond )
+    {
+      print SRC "
   q = (tCmdLnCond*) malloc( sizeof(tCmdLnCond) ) ; 
   if( errno != 0 ) { sysRc = errno ; goto _door ; }
   q->attr1 = \'".$_cond->{$condId}{attr1}."\' ;
@@ -1150,13 +1151,16 @@ int initCmdLnCond()
   p->next = q ;
   p=q ;
   " ;
+    }
+
+  print SRC "
+  _door:
+  return sysRc ;
+}
+  ";
   }
 
   print SRC "
-_door:
-  return sysRc ;
-}
-
 /******************************************************************************/
 /* init macros                                                                */
 /******************************************************************************/
@@ -1683,6 +1687,7 @@ int checkMacro(  int argc, const char* UNUSED(argv[]) )
 {
   int sysRc = 0 ;
 
+  if( anchorMacro == NULL )  goto _door;
   tCmdLnMacro *pMacro = anchorMacro ;
   
   while( pMacro->next != NULL )         // break at last conditional node 
