@@ -4,3 +4,5 @@
 004 version 0.0.9 macro (argc) added to clo.pl
 004 version 0.1.1 macro (argc) added to clo.pl, fixing bugs on macro
 005 version 0.1.2 initCmdLnMacro malloc wrong rc type (cast)
+006 version 0.1.3 initCmdLn q->element set to 0
+                  usage if( anchorCfg == NULL 3th check removed

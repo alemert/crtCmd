@@ -375,7 +375,6 @@ tCmdLnAttr* findLongAttr(  const char *longName ) ;
 
 int initCmdLnCfg() ;
 int initCmdLnCond() ;
-int initCmdLnMacro();
 
 int getCmdLnAttr( int argc, const char* argv[] ) ;
 int handleCmdLn(  int argc, const char* argv[] ) ;
@@ -526,8 +525,6 @@ void usage( )
     fprintf( stderr, \"\\n\\tno help available\\n\");//  
     goto _door ;                                  // initializing has failed
   }                                               //
-                                                  //
-  if( anchorCfg == NULL ) goto _door ;            //
                                                   //
   p = anchorCfg ;                                 // print obligatory attr
   while( p->next != NULL )                        //
@@ -947,7 +944,7 @@ int initCmdLnCfg()
     print SRC "  q = (tCmdLnCfg*) malloc(sizeof(tCmdLnCfg)) ;
 
   /****************************************************************************/
-  /* command line attribte $long                                  */
+  /* command line attribte $long                                    */
   /****************************************************************************/
   q->longAttr = (char*) malloc( sizeof(\"$long\\0\") );
   memcpy( q->longAttr, \"$long\", sizeof(\"$long\\0\") );
@@ -988,6 +985,12 @@ int initCmdLnCfg()
     {
       die "unknown appliance for $long cmd line attribute\n" ;
     }
+
+    print SRC "
+  //--------------------------------------------------------
+  // command line attribute $long element count
+  //--------------------------------------------------------
+  q->element = 0; " ;
 
     print SRC "
   //--------------------------------------------------------
@@ -1125,10 +1128,10 @@ int initCmdLnCond()
   return sysRc ;
 }
   ";
+    return ;
   }
-  else
-  {
-    print SRC "
+
+  print SRC "
   tCmdLnCond *p ;
   tCmdLnCond *q ;
 
@@ -1139,9 +1142,9 @@ int initCmdLnCond()
   p->next = NULL ;
   ";
 
-    foreach my $condId ( keys %$_cond )
-    {
-      print SRC "
+  foreach my $condId ( keys %$_cond )
+  {
+    print SRC "
   q = (tCmdLnCond*) malloc( sizeof(tCmdLnCond) ) ; 
   if( errno != 0 ) { sysRc = errno ; goto _door ; }
   q->attr1 = \'".$_cond->{$condId}{attr1}."\' ;
@@ -1151,16 +1154,13 @@ int initCmdLnCond()
   p->next = q ;
   p=q ;
   " ;
-    }
-
-  print SRC "
-  _door:
-  return sysRc ;
-}
-  ";
   }
 
   print SRC "
+_door:
+  return sysRc ;
+}
+
 /******************************************************************************/
 /* init macros                                                                */
 /******************************************************************************/
@@ -1687,7 +1687,6 @@ int checkMacro(  int argc, const char* UNUSED(argv[]) )
 {
   int sysRc = 0 ;
 
-  if( anchorMacro == NULL )  goto _door;
   tCmdLnMacro *pMacro = anchorMacro ;
   
   while( pMacro->next != NULL )         // break at last conditional node 
