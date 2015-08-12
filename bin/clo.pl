@@ -1296,7 +1296,7 @@ int getCmdLnAttr(int argc, const char* argv[] )
       {                                             //   in config 
         sysRc=1;                                    //
         snprintf( errText, ERR_TXT_LNG,             //
-               \"unknown attribute %s\", argv[i]);  //
+               \"    unknown attribute %s\", argv[i]);  //
         goto _door;                                 //
       }                                             //
                                                     // allocate additional node
