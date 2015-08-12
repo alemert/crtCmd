@@ -461,7 +461,7 @@ tCmdLnMacro* anchorMacro ;
 
 #define ERR_TXT_LNG 255
 char errText[ERR_TXT_LNG] ;
-     errText[0] = '\0' ;
+     errText[0] = '\\0' ;
 
 /******************************************************************************/
 /*   P R A G M A                                                              */
@@ -1314,7 +1314,7 @@ int getCmdLnAttr(int argc, const char* argv[] )
     {                                               //
       sysRc = 1  ;                                  //
       snprintf( errText, ERR_TXT_LNG,               //
-                \"uknown attribute %s\", %argv[i]); //
+               \"uknown attribute %s\", %argv[i]);  //
       goto _door ;                                  //
     }                                               //
                                                     //
