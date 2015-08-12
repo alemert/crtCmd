@@ -1313,7 +1313,7 @@ int getCmdLnAttr(int argc, const char* argv[] )
     {                                               //
       sysRc = 1  ;                                  //
       snprintf( errText, ERR_TXT_LNG,               //
-               \"uknown attribute %s\", %argv[i]);  //
+               \"uknown attribute %s\", argv[i]);   //
       goto _door ;                                  //
     }                                               //
                                                     //
