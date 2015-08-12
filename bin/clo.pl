@@ -460,8 +460,7 @@ tCmdLnCond*  anchorCond  ;
 tCmdLnMacro* anchorMacro ;
 
 #define ERR_TXT_LNG 255
-char errText[ERR_TXT_LNG] ;
-     errText[0] = '\\0' ;
+char errText[ERR_TXT_LNG] = \"\\0\" ;
 
 /******************************************************************************/
 /*   P R A G M A                                                              */
@@ -663,7 +662,7 @@ void usage( )
   }                                               //
   if( strlen(errText) > 0 )                       //
   {                                               //
-    fprintf( \"\\n%s\\n\", errText );             //
+    fprintf(stderr,\"\\n%s\\n\",errText );    
   }                                               //
   fprintf(stderr,\"\\n\") ;                       //
                                                   //
