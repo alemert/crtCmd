@@ -1,8 +1,9 @@
-001 version 0.0.3 rollout crtCmd, not all functions were tested in unit test
-002 version 0.0.6 improved help output
-003 version 0.0.8 clo.pl return pointer changed to const pointer
-004 version 0.0.9 macro (argc) added to clo.pl
-004 version 0.1.1 macro (argc) added to clo.pl, fixing bugs on macro
-005 version 0.1.2 initCmdLnMacro malloc wrong rc type (cast)
-006 version 0.1.3 initCmdLn q->element set to 0
+001 ver 0.0.03 rollout crtCmd, not all functions were tested in unit test
+002 ver 0.0.06 improved help output
+003 ver 0.0.08 clo.pl return pointer changed to const pointer
+004 ver 0.0.09 macro (argc) added to clo.pl
+004 ver 0.1.01 macro (argc) added to clo.pl, fixing bugs on macro
+005 ver 0.1.02 initCmdLnMacro malloc wrong rc type (cast)
+006 ver 0.1.03 initCmdLn q->element set to 0
                   usage if( anchorCfg == NULL 3th check removed
+007 ver 0.1.04 err text added for usage

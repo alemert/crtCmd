@@ -263,7 +263,12 @@ sub printHead_h
   open  HEAD, ">$headFile" ;
   print HEAD "
 /******************************************************************************/
-/*                  c o m m a n d   l i n e   a n a l y s e r                 */
+/*                  C O M M A N D   L I N E   A N A L Y S E R                 */
+/*                                                                            */
+/*   ATTENTION:                                                               */
+/*      This file has been generated.                                         */
+/*      Don't change it.                                                      */
+/*                                                                            */
 /******************************************************************************/
 
 /******************************************************************************/
@@ -418,7 +423,12 @@ sub printHead_c
 
   print SRC "
 /******************************************************************************/
-/*                  c o m m a n d   l i n e   a n a l y s e r                 */
+/*                  C O M M A N D   L I N E   A N A L Y S E R                 */
+/*                                                                            */
+/*   ATTENTION:                                                               */
+/*      This file has been generated.                                         */
+/*      Don't change it.                                                      */
+/*                                                                            */
 /******************************************************************************/
 
 ";
@@ -448,6 +458,10 @@ tCmdLnCfg*   anchorCfg   ;
 tCmdLnAttr*  anchorAttr  ;
 tCmdLnCond*  anchorCond  ;
 tCmdLnMacro* anchorMacro ;
+
+#define ERR_TXT_LNG 255
+char errText[ERR_TXT_LNG] ;
+     errText[0] = '\0' ;
 
 /******************************************************************************/
 /*   P R A G M A                                                              */
@@ -646,6 +660,10 @@ void usage( )
   {                                               //
     p = p->next ;                                 //
     fprintf(stderr,\"%s\",p->help);               //
+  }                                               //
+  if( strlen(errText) > 0 )                       //
+  {                                               //
+    fprintf( \"\\n%s\\n\", errText );             //
   }                                               //
   fprintf(stderr,\"\\n\") ;                       //
                                                   //
@@ -1295,6 +1313,8 @@ int getCmdLnAttr(int argc, const char* argv[] )
     if( nodeCfg == NULL )                           // check existance
     {                                               //
       sysRc = 1  ;                                  //
+      snprintf( errText, ERR_TXT_LNG,               //
+                \"uknown attribute %s\", %argv[i]); //
       goto _door ;                                  //
     }                                               //
                                                     //
