@@ -1292,8 +1292,13 @@ int getCmdLnAttr(int argc, const char* argv[] )
         nodeCfg = findShortNameCfg( argv[i][1] ) ;  //
       }                                             //
                                                     //
-      if(nodeCfg==NULL) { sysRc=1; goto _door; }    // check if attr exists 
-                                                    //   in config
+      if(nodeCfg==NULL)                             // check if attr exists 
+      {                                             //   in config 
+        sysRc=1;                                    //
+        snprintf( errText, ERR_TXT_LNG,             //
+               \"unknown attribute %s\", argv[i]);  //
+        goto _door;                                 //
+      }                                             //
                                                     // allocate additional node
       nodeAttr = (tCmdLnAttr*) malloc(sizeof(tCmdLnAttr)) ;
       pAttr->next = nodeAttr ;                      //
@@ -1312,8 +1317,6 @@ int getCmdLnAttr(int argc, const char* argv[] )
     if( nodeCfg == NULL )                           // check existance
     {                                               //
       sysRc = 1  ;                                  //
-      snprintf( errText, ERR_TXT_LNG,               //
-               \"uknown attribute %s\", argv[i]);   //
       goto _door ;                                  //
     }                                               //
                                                     //
