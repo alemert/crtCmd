@@ -8,3 +8,4 @@
                   usage if( anchorCfg == NULL 3th check removed
 007 ver 0.1.04 err text added for usage
 008 ver 0.1.05 merging old lost changes from sysdmq6
+008 ver 0.1.06 fixing empty conditionals

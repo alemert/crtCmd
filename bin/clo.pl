@@ -1142,6 +1142,8 @@ int initCmdLnCond()
   {
     print SRC "
   anchorCond = (tCmdLnCond*) malloc(sizeof(tCmdLnCond)) ;
+  if( errno != 0 ) { sysRc = errno ; goto _door ; }
+  anchorCond->next = NULL;
 
   return sysRc ;
 }
