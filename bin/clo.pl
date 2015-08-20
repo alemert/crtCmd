@@ -1545,21 +1545,29 @@ int checkCmdLn()
       // check data type string (char*)
       // ---------------------------------------
       case CMDL_TYPE_STR  :                   //
-      {
-        if( pCfg->strValue==NULL )            // any values are allowed
+      {                                       //
+        if( pCfg->strValue == NULL )          // any values are allowed
         {                                     //
-          if( pAtt->strValue == NULL )        //
+          if( pAtt->strValue == NULL )        // but no value was found
           {                                   //
             sysRc = 1 ;                       //
             goto _door ;                      //
           }                                   //
-          if( pCfg->element < pAtt->element ) //
-          {
-            sysRc = 1;
-            goto _door;
-          }
+                                              //
+	  if( pCfg->element == 0 &&           // check if only one value was set
+              pAtt->element == 1  )           //
+          {                                   //
+            break;                            //
+          }                                   //
+          else if(pCfg->element<pAtt->element)// to many values found on 
+          {                                   //  command line 
+            sysRc = 1;                        //
+            goto _door;                       //
+          }                                   //
+                                              //
           break ;                             //
         }                                     //
+                                              //
         for( i=0; i<pAtt->element; i++ )      //
         {                                     // only special values given by
           found = 0 ;                         //   config (pCfg) are allowed
