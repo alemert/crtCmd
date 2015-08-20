@@ -1468,9 +1468,9 @@ int checkCmdLn()
       goto _door ;                            //
     }                                         //
                                               //
-    if( pAtt == NULL ) continue ;             // just ignore non-existing cmdLn
-                                              //   attributes if appliance 
-    switch( pCfg->type )                      //   optional 
+    if( pAtt == NULL ) continue ;             // ignore non-existing cmdLn
+                                              //  attributes if appliance 
+    switch( pCfg->type )                      //  optional 
     {                                         //
       case CMDL_TYPE_EMPTY:                   // nothing to do, no data
         break ;                               //
@@ -1545,6 +1545,7 @@ int checkCmdLn()
       // check data type string (char*)
       // ---------------------------------------
       case CMDL_TYPE_STR  :                   //
+      {
         if( pCfg->strValue==NULL )            // any values are allowed
         {                                     //
           if( pAtt->strValue == NULL )        //
@@ -1552,6 +1553,11 @@ int checkCmdLn()
             sysRc = 1 ;                       //
             goto _door ;                      //
           }                                   //
+          if( pCfg->element < pAtt->element ) //
+          {
+            sysRc = 1;
+            goto _door;
+          }
           break ;                             //
         }                                     //
         for( i=0; i<pAtt->element; i++ )      //
@@ -1573,8 +1579,9 @@ int checkCmdLn()
           }                                   //
         }                                     //
         break ;                               //
-    }                                         //
-  }                                           //
+      }   // -- case                          //
+    }     // -- switch                        //
+  }       // -- while                         //
                                               //
   // -------------------------------------------------------
   // check conditionals
