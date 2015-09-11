@@ -1650,10 +1650,8 @@ int checkCmdLn()
       case COND_OPR_IF :                      //
         if( pAtt1 == NULL &&                  //
             pAtt2 == NULL  ) break ;          //
-        if( pAtt2 )
-        {
-          if( pAtt1 ) break ;
-        }
+        if( !pAtt2 ) break ;
+        if( pAtt1 ) break ;
         sysRc = 1  ;                          //
         goto _door ;                          //
         break      ;                          //
