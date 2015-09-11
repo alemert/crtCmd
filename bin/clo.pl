@@ -26,6 +26,7 @@ my $cond_opr_xor   = '^' ;
 my $cond_opr_nor   = 'o' ;
 my $cond_opr_nand  = 'a' ;
 my $cond_opr_nxor  = 'x' ;
+my $cond_opr_if    = 'i' ;
 my $cond_opr_gt    = '>' ;
 my $cond_opr_lt    = '<' ;
 my $cond_opr_eq    = '=' ;
@@ -188,6 +189,7 @@ sub readCfg
       elsif( $operator eq '!and' ) { $operator = $cond_opr_nand ; }
       elsif( $operator eq '!or'  ) { $operator = $cond_opr_nor  ; }
       elsif( $operator eq '!xor' ) { $operator = $cond_opr_nxor ; }
+      elsif( $operator eq 'if'   ) { $operator = $cond_opr_if   ; }
       elsif( $operator eq 'gt'   ) { $operator = $cond_opr_gt   ; }
       elsif( $operator eq 'lt'   ) { $operator = $cond_opr_lt   ; }
       elsif( $operator eq 'eq'   ) { $operator = $cond_opr_eq   ; }
@@ -297,6 +299,7 @@ sub printHead_h
 #define COND_OPR_NOT_OR     \'$cond_opr_nor\'   
 #define COND_OPR_NOT_AND    \'$cond_opr_nand\'  
 #define COND_OPR_NOT_XOR    \'$cond_opr_nxor\'  
+#define COND_OPR_IF         \'$cond_opr_if\'  
 
 #define COND_OPR_GT         \'$cond_opr_gt\'
 #define COND_OPR_LT         \'$cond_opr_lt\'
@@ -1641,6 +1644,16 @@ int checkCmdLn()
         if( pAtt1 == NULL &&                  //
             pAtt2 == NULL  ) break ;          //
         if( !(pAtt1 || pAtt2) ) break ;       //
+        sysRc = 1  ;                          //
+        goto _door ;                          //
+        break      ;                          //
+      case COND_OPR_IF :                      //
+        if( pAtt1 == NULL &&                  //
+            pAtt2 == NULL  ) break ;          //
+        if( pAtt2 )
+        {
+          if( pAtt1 ) break ;
+        }
         sysRc = 1  ;                          //
         goto _door ;                          //
         break      ;                          //
